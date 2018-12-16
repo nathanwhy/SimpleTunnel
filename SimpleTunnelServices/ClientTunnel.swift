@@ -54,14 +54,14 @@ open class ClientTunnel: Tunnel {
 		if let colonRange = serverAddress.rangeOfCharacter(from: CharacterSet(charactersIn: ":"), options: [], range: nil) {
 			// The server is specified in the configuration as <host>:<port>.
             
-            let hostname = serverAddress.substring(with: serverAddress.startIndex..<colonRange.lowerBound)
-			let portString = serverAddress.substring(with: serverAddress.index(after: colonRange.lowerBound)..<serverAddress.endIndex)
+            let hostname = serverAddress[serverAddress.startIndex..<colonRange.lowerBound]
+			let portString = serverAddress[serverAddress.index(after: colonRange.lowerBound)..<serverAddress.endIndex]
 
 			guard !hostname.isEmpty && !portString.isEmpty else {
 				return .badConfiguration
 			}
 
-			endpoint = NWHostEndpoint(hostname:hostname, port:portString)
+			endpoint = NWHostEndpoint(hostname: String(hostname), port: String(portString))
 		}
 		else {
 			// The server is specified in the configuration as a Bonjour service name.

@@ -177,7 +177,9 @@ class ClientAppProxyTCPConnection : ClientAppProxyConnection {
 		// Read another chunk of data from the source application.
 		TCPFlow.readData { data, readError in
 			guard let readData = data , readError == nil else {
-				simpleTunnelLog("Failed to read data from the TCP flow. error = \(readError)")
+                if let error = readError {
+                    simpleTunnelLog("Failed to read data from the UDP flow. error = \(error)")
+                }
 				self.handleErrorCondition(.peerReset)
 				return
 			}
@@ -257,7 +259,9 @@ class ClientAppProxyUDPConnection : ClientAppProxyConnection {
 				let readEndpoints = remoteEndPoints
 				, readError == nil else
 			{
-				simpleTunnelLog("Failed to read data from the UDP flow. error = \(readError)")
+                if let error = readError {
+                    simpleTunnelLog("Failed to read data from the UDP flow. error = \(error)")
+                }
 				self.handleErrorCondition(.peerReset)
 				return
 			}

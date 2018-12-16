@@ -308,7 +308,9 @@ open class Tunnel: NSObject {
 				if let host = properties[TunnelMessageKey.Host.rawValue] as? String,
 					let port = properties[TunnelMessageKey.Port.rawValue] as? Int
 				{
-					simpleTunnelLog("Received data for connection \(connection?.identifier) from \(host):\(port)")
+                    if let identifier = connection?.identifier {
+                        simpleTunnelLog("Received data for connection \(identifier) from \(host):\(port)")
+                    }
 					/* UDP case : send peer's address along with data */
 					targetConnection.sendDataWithEndPoint(data, host: host, port: port)
 				}
@@ -326,10 +328,14 @@ open class Tunnel: NSObject {
 				if let closeDirectionNumber = properties[TunnelMessageKey.CloseDirection.rawValue] as? Int,
 					let closeDirection = TunnelConnectionCloseDirection(rawValue: closeDirectionNumber)
 				{
-					simpleTunnelLog("\(connection?.identifier): closing \(closeDirection)")
+                    if let identifier = connection?.identifier {
+                        simpleTunnelLog("\(identifier): closing \(closeDirection)")
+                    }
 					targetConnection.closeConnection(closeDirection)
 				} else {
-					simpleTunnelLog("\(connection?.identifier): closing reads and writes")
+                    if let identifier = connection?.identifier {
+                        simpleTunnelLog("\(identifier): closing reads and writes")
+                    }
 					targetConnection.closeConnection(.all)
 				}
 

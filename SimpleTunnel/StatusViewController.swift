@@ -74,8 +74,8 @@ class StatusViewController: UITableViewController {
 		{
 			do {
 				try session.sendProviderMessage(message) { response in
-					if response != nil {
-						let responseString = NSString(data: response!, encoding: String.Encoding.utf8.rawValue)
+					if let response = response,
+                        let responseString = NSString(data: response, encoding: String.Encoding.utf8.rawValue) {
 						simpleTunnelLog("Received response from the provider: \(responseString)")
 					} else {
 						simpleTunnelLog("Got a nil response from the provider")
