@@ -98,16 +98,19 @@ open class ClientTunnel: Tunnel {
 				return
 			}
 
-			let lengthData = data
+            guard let lengthData = data else {
+                simpleTunnelLog("Cannot get data")
+                return
+            }
 
-			guard lengthData!.count == MemoryLayout<UInt32>.size else {
-				simpleTunnelLog("Length data length (\(lengthData!.count)) != sizeof(UInt32) (\(MemoryLayout<UInt32>.size)")
+			guard lengthData.count == MemoryLayout<UInt32>.size else {
+				simpleTunnelLog("Length data length (\(lengthData.count)) != sizeof(UInt32) (\(MemoryLayout<UInt32>.size)")
 				self.closeTunnelWithError(SimpleTunnelError.internalError as NSError)
 				return
 			}
 
 			var totalLength: UInt32 = 0
-			(lengthData as! NSData).getBytes(&totalLength, length: MemoryLayout<UInt32>.size)
+			(lengthData as NSData).getBytes(&totalLength, length: MemoryLayout<UInt32>.size)
 
 			if totalLength > UInt32(Tunnel.maximumMessageSize) {
 				simpleTunnelLog("Got a length that is too big: \(totalLength)")
@@ -125,15 +128,18 @@ open class ClientTunnel: Tunnel {
 					return
 				}
 
-				let payloadData = data
+                guard let payloadData = data else {
+                    simpleTunnelLog("Cannot get data")
+                    return
+                }
 
-				guard payloadData!.count == Int(totalLength) else {
-					simpleTunnelLog("Payload data length (\(payloadData!.count)) != payload length (\(totalLength)")
+				guard payloadData.count == Int(totalLength) else {
+					simpleTunnelLog("Payload data length (\(payloadData.count)) != payload length (\(totalLength)")
 					self.closeTunnelWithError(SimpleTunnelError.internalError as NSError)
 					return
 				}
 
-				_ = self.handlePacket(payloadData!)
+				_ = self.handlePacket(payloadData)
 
 				self.readNextPacket()
 			}
