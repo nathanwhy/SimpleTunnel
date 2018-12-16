@@ -1,3 +1,5 @@
+> Migrate to Swift 4.2 for all
+
 > The Apple's Network Extension Demo *(revision1.3 2016-10-04)* is not fully-swift3 yet. This demo update its rest swift3 uncompatible code to swift3 fully-compatible, as well as some bug fixes. Feel free to check it out.
 
 # SimpleTunnel: Customized Networking Using the NetworkExtension Framework
