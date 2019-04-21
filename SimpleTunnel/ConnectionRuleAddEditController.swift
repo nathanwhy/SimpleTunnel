@@ -101,7 +101,7 @@ class ConnectionRuleAddEditController: ConfigurationParametersViewController {
 
 				let enumValues: [NEEvaluateConnectionRuleAction] = [ .connectIfNeeded, .neverConnect, ],
 					stringValues = enumValues.map { $0.description },
-					currentSelection = enumValues.index { $0 == targetRule.action }
+					currentSelection = enumValues.firstIndex { $0 == targetRule.action }
 
 				enumController.setValues(stringValues, title: "Action", currentSelection: currentSelection) { newRow in
 					let newAction = enumValues[newRow]
